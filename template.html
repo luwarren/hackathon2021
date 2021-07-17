@@ -1,14 +1,645 @@
 <!DOCTYPE html>
-<!-- HTML template -->
-<html>
-	<head>
-		<link rel="stylesheet" href="style.css">
-		<title></title>
-		<style></style>
-	</head>
-	<body>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-		<script src="script.js"></script>
-		<script></script>
-	</body>
+<head>
+
+
+  
+<!--
+    Page Theme: Marble
+    soundvenue.tumblr.com
+    last updated may 10 2021
+ 
+    CREDITS:
+    -tumblr controls: @cyantists
+    -Feathericons: github.com/feathericons/feather
+    -Tooltip: atomiks.github.io/tippyjs
+    -inspiration: https://dribbble.com/shots/3446002-Card
+ 
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="{Favicon}">
+<link rel="alternate" type="application/rss+xml" href="{RSS}">
+<title>{title}</title>
+{block:Description}<meta name="description" content="{MetaDescription}" />{/block:Description}
+
+
+<!------------ scripts ----> 
+<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script> <!-- feather icons -->
+<script src="https://unpkg.com/feather-icons"></script> <!-- feather icons -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> <!-- for tooltips --> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+<script src="https://unpkg.com/popper.js@1"></script> <!-- tooltips -->
+<script src="https://unpkg.com/tippy.js@5/dist/tippy-bundle.iife.js"></script> <!-- tooltips -->
+
+<!------------ stylesheets ----> 
+<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_o5hd5vvqpoqiwwmi.css">  <!-- feather icons ::before -->
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@5/dist/svg-arrow.css" /> <!-- tooltips -->
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+
+<style type="text/css">
+/*--------------------
+
+
+
+    This is where you change colours and images!
+    You can use htmlcolorcodes.com to pick a colour
+    and imgur to upload an image.
+    Changing the content is further down below in the code.
+    
+    
+    
+--------------------*/
+:root {
+    
+    /*----text color  */
+    --ColorText: #333333;
+    
+    /*----link color  */
+    --ColorLink: #a8a8a8;
+    
+    /*----accent color  */
+    --ColorAccent1: #d0a49c;
+     
+    /*----label/navigation color  */
+    --ColorLabel: #e4cec7;
+    
+    /*----font size  */
+    --FontSize: 13px;
+
+    /* header image - should be at least 200px x 310px */
+ 	--ImageHeader: url("https://i.imgur.com/U58HWBc.jpg");
+ 	
+    /* icon image - should be at least 90 x 90px */
+ 	--ImageIcon: url("https://i.imgur.com/XCQDxtc.png");
+ 	
+    /* please don't touch these */
+    --ColorBG: #14868f;
+    --ColorPostBG: #ffffff;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+.vignette, #vignette {
+    opacity:0;
+}
+.lightbox-image, #tumblr_lightbox img {
+    box-shadow:none !important;
+    border-radius:0 !important;
+    max-width:none;
+}
+.tmblr-lightbox, #tumblr_lightbox {
+    background-color:rgba(255,255,255,.95) !important;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+    font-family: 'Karla', sans-serif;
+	font-size: var(--FontSize);
+	line-height: normal;
+	background-color: var(--ColorBG);
+	color: var(--ColorText);
+}
+ 
+a {
+    color:var(--ColorLink);
+    text-decoration: none;
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+ 
+a:hover {
+    color: var(--ColorAccent1);
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+ 
+a:last-child {
+    margin-right:0px;
+}
+
+#wrap {
+	width: 330px;
+	height: 100%;
+	margin:0 auto;
+}
+
+#container {
+	width: 330px;
+	display: grid;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	height: 100%;
+}
+#inner {
+	width: 330px;
+	display: grid;
+	grid-template-areas: "content sidebar";
+	grid-template-columns: repeat(1, 1fr 40px);
+	grid-gap: 0;
+	align-items: flex-start;
+}
+
+.navigate {
+	order: 2;
+	-webkit-order: 2;
+	background-color: var(--ColorLabel);
+	border-radius: 0 10px 10px 0px;
+	overflow: hidden;
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	margin-top: 52px;
+}
+ul.tabs {
+	margin: 0;
+	padding: 10px;
+	list-style: none;
+	display: flex;
+	grid-gap: 15px;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+}
+ul.tabs li {
+	margin: 0;
+	cursor: pointer;
+}
+ul.tabs li svg {
+	width: 18px;
+	height: 18px;
+	padding: 0px;
+	stroke-width: 1.7;
+}
+
+ul.tabs li a {
+	display: flex;
+	font-weight: 700;
+	opacity: 1;
+	color: #ffffff;
+	cursor: pointer;
+	padding: 0;
+}
+.navigate .is-active {
+}
+
+.navigate .is-active svg {
+    color: #ffffff;
+    opacity:1;
+}
+.stuff {
+	order: 1;
+	-webkit-order: 1;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	grid-gap: 0;
+	box-shadow: 1px 10px 20px 0px #e1e1e1;
+	border-radius: 10px;
+	overflow: hidden;
+}
+#header {
+    background-color: var(--ColorPostBG);
+	background-image: var(--ImageHeader);
+	height: 200px;
+	width: 290px;
+	display: block;
+	object-fit: cover;
+	object-position: 0% 0%;
+	z-index: 0;
+	position: relative;
+	background-position: center;
+	background-size: cover;
+}
+#icon {
+	width: 90px;
+	height: 90px;
+	display: block;
+	padding: 0;
+	margin: 150px auto 0 auto;
+	z-index: 9;
+	position: relative;
+	padding: 0;
+	overflow: hidden;
+	border-radius: 100%;
+	box-shadow: 1px 10px 20px 0px #e1e1e1;
+    background-color: var(--ColorPostBG);
+	background-image: var(--ImageIcon);
+	object-fit: cover;
+	object-position: 0% 0%;
+	z-index: 2;
+	background-position: center;
+	background-size: cover;
+}
+
+.tabs-content {
+	padding: 0;
+	overflow-y: hidden;
+	overflow-x: hidden;
+	margin: 0;
+}
+.contents {
+	height: 130px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.tabs-panel {
+	display: none;
+	padding: 65px 35px 35px 35px;
+	margin-top: 0px;
+	height: 130px;
+}
+
+.tabs-panel.is-active {
+	display: block;
+	background-color: var(--ColorPostBG);
+}
+ul#profile{
+	list-style: none;
+	padding: 0;
+	margin:0;
+}    
+
+ul#profile li {
+	margin: 0 0 8px 0;
+	list-style: none;
+	line-height: normal;
+}
+ul#profile li label {
+    text-transform:uppercase;
+    font-weight:800;
+    font-size:11px;
+    letter-spacing:0.5px;
+    margin-right:8px;
+}
+
+.linkstitle {
+    display:block;
+    text-transform:uppercase;
+    font-weight:800;
+    font-size:11px;
+    letter-spacing:0.5px;
+    margin-bottom:20px;
+}
+ul#social {
+	list-style: none;
+	padding: 0;
+	margin: 0 0 20px 0;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	grid-gap: 10px;
+}
+ul#social li {
+	margin: 0;
+	list-style: none;
+	line-height: normal;
+}
+
+ul#social li svg {
+	width: 20px;
+	height: 20px;
+	padding: 0px;
+	stroke-width: 1.7;
+}
+
+ul#links {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: block;
+}
+ul#links li {
+	margin: 0 10px 8px 0;
+	list-style: none;
+	line-height: normal;
+	display: inline-block;
+}
+ul#currently {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	grid-gap: 15px;
+}
+ul#currently li {
+	margin: 0;
+	list-style: none;
+	line-height: normal;
+}
+
+ul#currently li svg {
+	color: var(--ColorAccent1);
+	width: 19px;
+	height: 19px;
+	display: inline;
+	margin-right: 10px;
+	vertical-align: middle;
+	stroke-width: 1.7;
+}
+
+ul#currently li label {
+    text-transform:uppercase;
+    font-weight:800;
+    font-size:11px;
+    letter-spacing:0.5px;
+    margin-right:2px;
+}
+
+iframe.tmblr-iframe {
+    z-index:99999999999999!important;
+    top: 15px!important;
+    right: 15px!important;
+    opacity:0;
+    padding-right:38px;
+    -webkit-transform:scale(0.75);
+    -ms-transform:scale(0.75);
+    transform:scale(0.75);
+    -webkit-transform-origin:100% 0;
+    -ms-transform-origin:100% 0;
+    transform-origin:100% 0;
+    -webkit-transition: var(--transitions);
+    -o-transition: var(--transitions);
+    transition: var(--transitions);
+    cursor: pointer;
+}
+ 
+iframe.tmblr-iframe:hover {
+    opacity:1!important;
+    -webkit-transition: var(--transitions);
+    -o-transition: var(--transitions);
+    transition: var(--transitions);
+}
+ 
+.tumblrcontrols {
+    position:fixed;
+    top:28px;
+    right:15px;
+    z-index:999999999;
+    cursor: pointer;
+}
+ 
+.tumblrcontrols svg {
+    width:15px;
+    height:15px;
+    cursor: pointer;
+    color:var(--ColorLink);
+}
+
+ ::-moz-selection {
+    background-color: var(--ColorAccent1);
+    color: var(--ColorText);
+}
+ 
+::selection {
+    background-color: var(--ColorAccent1);
+    color: var(--ColorText);
+}
+ 
+.tippy-tooltip.custom-theme {
+    font-size:calc(var(--FontSize) + 0px);
+    text-align:center;
+    font-weight:300!important;
+    color: var(--ColorPostBG);
+    background-color: var(--ColorAccent1);
+    border:0;
+}
+ 
+.tippy-tooltip.custom-theme .tippy-svg-arrow {
+    fill: var(--ColorAccent1);
+}
+ 
+#credit {
+	position: fixed;
+	right: 10px;
+	bottom: 10px;
+}
+ 
+#credit a {
+	margin: 0;
+	text-align: center;
+	padding: 0;
+}
+#credit a svg {
+	width: 16px;
+	height: 16px;
+	padding: 6px;
+	background-color: var(--ColorText);
+	color: var(--ColorPostBG);
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar {
+    width: 4px; 
+    height: 4px;
+    background-color: #efefef;
+    overflow:hidden;
+    border-radius:10px;
+}
+ 
+::-webkit-scrollbar-track {
+    border: 3px solid #ffffff;
+    background-color: #ffffff;
+    overflow:hidden;
+    border-radius:10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+   border: 0px solid #ffffff;
+   background-color: #efefef;
+   min-height: 24px;
+   min-width: 24px;
+     border-radius:10px;
+}
+
+</style>
+</head>
+<body> 
+
+
+<div id="wrap">
+<div id="container">
+<div id="inner">
+
+
+<section class="navigate">
+<ul class="tabs" data-tabs id="allinone">
+<li class="tabs-title is-active"><a title="intro" href="#panel1"><i data-feather="user"></i></a></li>
+ 
+<li class="tabs-title"><a title="links" href="#panel2"><i data-feather="star"></i></a></li>
+ 
+<li class="tabs-title"><a title="currently" href="#panel3"><i data-feather="bell"></i></a></li>
+</ul>
+</section>
+
+<section class="stuff">
+
+<div id="header">
+<div id="icon"></div>
+</div>
+
+<div class="tabs-content" data-tabs-content="allinone">
+ 
+<!---------------------------------- Section: profile -->
+<div class="tabs-panel is-active" id="panel1">
+<div class="contents">
+<ul id="profile">
+<!------------------------
+
+
+    Here's your profile.
+    You and add and remove as much as you want.
+    Just copy/delete each line. (from <li> to </li>)
+    
+    
+------------------------>
+
+<li><label>name:</label> jane doe</li>
+<li><label>pronouns:</label> sher/her</li>
+<li><label>location:</label> narnia</li>
+<li><label>bday:</label> March 4th</li>
+<li><label>zodiac:</label> pisces</li>
+<li><label>studying:</label> physics</li>
+<li><label>alignment:</label> chaotic good</li>
+<li><label>hogwarts:</label> ravenclaw</li>
+</ul>
+
+</div>
+</div>
+
+<!---------------------------------- Section: links -->
+<div class="tabs-panel" id="panel2">
+<div class="contents">
+
+<div class="linkstitle">social media</div>
+<ul id="social">
+<!------------------------
+
+
+    Here's your social media links.
+    You can delete each line. (from <li> to </li>)if you don't
+    want a certain social media displayed.
+    remember to change the # with a url!
+    
+    
+------------------------>
+<li><a title="twitter" href="#"><i data-feather="twitter"></i></a></li>
+<li><a title="instagram" href="#"><i data-feather="instagram"></i></a></li>
+<li><a title="pinterest" href="#"><i data-feather="image"></i></a></li>
+<li><a title="facebook" href="#"><i data-feather="facebook"></i></a></li>
+<li><a title="dribbble" href="#"><i data-feather="dribbble"></i></a></li>
+</ul>
+
+<div class="linkstitle">links</div>
+<ul id="links">
+<!------------------------
+    And here we have the links.
+    You can delete/ccopy each line. (from <li> to </li>)
+    remember to not only change the link text the with a url as well.
+------------------------>
+<li><a href="#">link one</a></li>
+<li><a href="#">link two</a></li>
+<li><a href="#">link three</a></li>
+<li><a href="#">link four</a></li>
+<li><a href="#">link five</a></li>
+<li><a href="#">link six</a></li>
+</ul>
+
+</div>
+</div>
+
+<!---------------------------------- Section: currently -->
+<div class="tabs-panel" id="panel3">
+<div class="contents">
+
+<ul id="currently">
+<!------------------------
+    Here's your profile.
+    You and add and remove as much as you want.
+    Just copy/delete each line. (from <li> to </li>)
+------------------------>
+<li><i data-feather="bar-chart"></i>
+
+<label>status:</label> back from hitus</li>
+
+<li><i data-feather="music"></i>
+
+<label>listening:</label> harry styles</li>
+
+<li><i data-feather="bookmark"></i>
+
+<label>reading:</label> the lord of the rings</li>
+
+<li><i data-feather="eye"></i>
+
+<label>watching:</label> stranger things</li>
+</ul>
+
+</div>
+</div>
+
+</section>
+
+</div>
+</div>
+</div>
+
+
+<div title="soundvenue" id="credit">
+<a href="https://soundvenue.tumblr.com/"><i data-feather="cloud"></i></a>
+</div>
+<div class="tumblrcontrols"><i data-feather="more-vertical"></i></div>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/foundation/6.2.1/foundation.min.js"></script><!-- tabs -->
+
+<script type="text/javascript">
+
+//--------- tabs
+$(function() {
+    $('#allinone').on('change.zf.tabs', function() {});
+    $(document).foundation();
+    $('#allinone').foundation('selectTab', 'panel1');
+});
+
+//----------tooltips 
+ 
+tippy('[title]', {
+    theme: 'custom',
+    arrow: tippy.roundArrow,
+    zIndex: 9999999999,
+    maxWidth: 300,
+ 
+    content(reference) {
+      const title = reference.getAttribute('title');
+      reference.removeAttribute('title');
+      return title;
+    },
+  });
+
+
+//----------feather icons 
+
+feather.replace();
+
+</script>
+
+
 </html>
