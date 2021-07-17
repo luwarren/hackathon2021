@@ -6,6 +6,7 @@ const questionElement = document.getElementById('question')
 const answerButtonsElement = document.getElementById('answer-buttons')
 
 let currentQuestionIndex
+let end_result
 
 startButton.addEventListener('click', startGame)
 nextButton.addEventListener('click', () => {
@@ -13,8 +14,7 @@ nextButton.addEventListener('click', () => {
 })
 //should pass in result, under path
 endButton.addEventListener('click', () => {
-    path = answer.path
-    showResult(path)
+    showResult()
 })
 
 function startGame() {
@@ -68,7 +68,8 @@ function selectAnswer(e) {
     }   
 }
 
-showResult(path) {
+function showResult() {
+    path = answer.path
     if (path == "asm") {
         <iframe src="assembly.html" style="border:none;" title="Assembly"></iframe>
     } else if (path == "c") {
